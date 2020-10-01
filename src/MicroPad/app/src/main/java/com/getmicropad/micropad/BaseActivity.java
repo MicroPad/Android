@@ -188,12 +188,12 @@ public class BaseActivity extends AppCompatActivity {
 			insertAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, types);
 
 			runOnUiThread(() -> {
-				ListView insertList = (ListView)findViewById(R.id.insert_list);
+				ListView insertList = findViewById(R.id.insert_list);
 				insertList.setAdapter(insertAdapter);
 			});
 		}).start();
 
-		noteContainer = (WebView)findViewById(R.id.note_webview);
+		noteContainer = findViewById(R.id.note_webview);
 		noteContainer.getSettings().setJavaScriptEnabled(true);
 		noteContainer.addJavascriptInterface(this, "Native");
 		noteContainer.getSettings().setAllowFileAccess(true);
@@ -377,11 +377,11 @@ public class BaseActivity extends AppCompatActivity {
 					dialogView = inflater.inflate(R.layout.markdown_editor, null);
 					builder.setView(dialogView);
 
-					EditText markdownInput = (EditText)dialogView.findViewById(R.id.markdown_input);
-					EditText sourceInput = (EditText)dialogView.findViewById(R.id.source_input);
-					EditText fontInput = (EditText)dialogView.findViewById(R.id.font_input);
-					EditText widthInput = (EditText)dialogView.findViewById(R.id.width_input);
-					EditText heightInput = (EditText)dialogView.findViewById(R.id.height_input);
+					EditText markdownInput = dialogView.findViewById(R.id.markdown_input);
+					EditText sourceInput = dialogView.findViewById(R.id.source_input);
+					EditText fontInput = dialogView.findViewById(R.id.font_input);
+					EditText widthInput = dialogView.findViewById(R.id.width_input);
+					EditText heightInput = dialogView.findViewById(R.id.height_input);
 
 					markdownInput.setText(element.getContent());
 					fontInput.setText(((MarkdownElement) element).getFontSize());
@@ -426,9 +426,9 @@ public class BaseActivity extends AppCompatActivity {
 					dialogView = inflater.inflate(R.layout.image_editor, null);
 					builder.setView(dialogView);
 
-					EditText sourceInput = (EditText)dialogView.findViewById(R.id.source_input);
-					EditText widthInput = (EditText)dialogView.findViewById(R.id.width_input);
-					EditText heightInput = (EditText)dialogView.findViewById(R.id.height_input);
+					EditText sourceInput = dialogView.findViewById(R.id.source_input);
+					EditText widthInput = dialogView.findViewById(R.id.width_input);
+					EditText heightInput = dialogView.findViewById(R.id.height_input);
 
 					widthInput.setText(element.getWidth());
 					heightInput.setText(element.getHeight());
@@ -463,7 +463,7 @@ public class BaseActivity extends AppCompatActivity {
 					dialogView = inflater.inflate(R.layout.recording_editor, null);
 					builder.setView(dialogView);
 
-					EditText sourceInput = (EditText)dialogView.findViewById(R.id.source_input);
+					EditText sourceInput = dialogView.findViewById(R.id.source_input);
 
 					Stream.of(getNote().bibliography).filter(source -> source.getItem().equals(id)).forEach(source -> {
 						if (source.getUrl() == null || source.getUrl().length() == 0) {
@@ -477,8 +477,8 @@ public class BaseActivity extends AppCompatActivity {
 					newFilename = ((FileElement) element).getFilename();
 
 					//Handle 'record' button
-					Button recordBtn = (Button)dialogView.findViewById(R.id.recording_button);
-					Button stopRecordBtn = (Button)dialogView.findViewById(R.id.stop_recording_button);
+					Button recordBtn = dialogView.findViewById(R.id.recording_button);
+					Button stopRecordBtn = dialogView.findViewById(R.id.stop_recording_button);
 					OpusRecorder opusRecorder = OpusRecorder.getInstance();
 
 					recordBtn.setOnClickListener(v -> {
@@ -540,7 +540,7 @@ public class BaseActivity extends AppCompatActivity {
 					dialogView = inflater.inflate(R.layout.file_editor, null);
 					builder.setView(dialogView);
 
-					EditText sourceInput = (EditText)dialogView.findViewById(R.id.source_input);
+					EditText sourceInput = dialogView.findViewById(R.id.source_input);
 
 					Stream.of(getNote().bibliography).filter(source -> source.getItem().equals(id)).forEach(source -> {
 						if (source.getUrl() == null || source.getUrl().length() == 0) {
@@ -611,7 +611,7 @@ public class BaseActivity extends AppCompatActivity {
 							bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 							currentContent = byteArrayOutputStream.toByteArray();
 							runOnUiThread(() -> {
-								((TextView)dialogView.findViewById(R.id.filename_text)).setText(getFilenameFromUri(selFile));
+								(dialogView.findViewById(R.id.filename_text)).setText(getFilenameFromUri(selFile));
 								dialog.dismiss();
 							});
 
@@ -643,7 +643,7 @@ public class BaseActivity extends AppCompatActivity {
 							byteArrayOutputStream.close();
 							inputStream.close();
 							runOnUiThread(() -> {
-								((TextView)dialogView.findViewById(R.id.filename_text)).setText(newFilename);
+								(dialogView.findViewById(R.id.filename_text)).setText(newFilename);
 								dialog.dismiss();
 							});
 						} catch (IOException e) {
@@ -731,7 +731,7 @@ public class BaseActivity extends AppCompatActivity {
 		runOnUiThread(() -> {
 			Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 			Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-			PercentFrameLayout insertContainer = (PercentFrameLayout)findViewById(R.id.insert_container);
+			PercentFrameLayout insertContainer = findViewById(R.id.insert_container);
 
 			if (insertMenuOpen) {
 				insertMenuOpen = false;
@@ -741,7 +741,7 @@ public class BaseActivity extends AppCompatActivity {
 			}
 			insertMenuOpen = true;
 
-			ListView list = (ListView)findViewById(R.id.insert_list);
+			ListView list = findViewById(R.id.insert_list);
 			list.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
 				int mdCount = 1;
 				int imgCount = 1;
@@ -834,7 +834,7 @@ public class BaseActivity extends AppCompatActivity {
 
 				ListAdapter searchAdapter = new ArrayAdapter<>(BaseActivity.this, android.R.layout.simple_list_item_1, res);
 				runOnUiThread(() -> {
-					ListView searchList = (ListView)view.findViewById(R.id.search_list);
+					ListView searchList = view.findViewById(R.id.search_list);
 					searchList.setAdapter(searchAdapter);
 
 					searchList.setOnItemClickListener((adapterView, v, pos, a4) -> {
@@ -1047,7 +1047,7 @@ public class BaseActivity extends AppCompatActivity {
 		@Override
 		protected void onPreExecute() {
 			//Show progress bar
-			progressBar = (ProgressBar)findViewById(R.id.progress);
+			progressBar = findViewById(R.id.progress);
 			progressBar.setIndeterminate(true);
 			progressBar.setVisibility(View.VISIBLE);
 		}
@@ -1486,8 +1486,8 @@ public class BaseActivity extends AppCompatActivity {
 
 				builder.setPositiveButton("Login", (d, w) -> {
 					syncBtn.startAnimation(rotate);
-					String username = ((EditText)view.findViewById(R.id.username_input)).getText().toString();
-					String password = ((EditText)view.findViewById(R.id.password_input)).getText().toString();
+					String username = (view.findViewById(R.id.username_input)).getText().toString();
+					String password = (view.findViewById(R.id.password_input)).getText().toString();
 
 					syncer.service.login(username, password).enqueue(new Callback<String>() {
 						@Override
@@ -1527,8 +1527,8 @@ public class BaseActivity extends AppCompatActivity {
 					dialog.setCanceledOnTouchOutside(false);
 					dialog.show();
 
-					String username = ((EditText) view.findViewById(R.id.username_input)).getText().toString();
-					String password = ((EditText) view.findViewById(R.id.password_input)).getText().toString();
+					String username = (view.findViewById(R.id.username_input)).getText().toString();
+					String password = ( view.findViewById(R.id.password_input)).getText().toString();
 
 					syncer.service.signup(username, password).enqueue(new Callback<String>() {
 						@Override
